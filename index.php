@@ -1,11 +1,11 @@
-<html>
+<?php 
+$title = "Monopoly Bank app";
+include("header.php");
+?>
 <body>
-
-<form action="test.php" method="post">
-Name: <input type="text" name="fname">
-Age: <input type="text" name="age">
-<input type="submit">
-</form>
+<h1>Monopoly Bank APP</h1>
+<h2>Seznam hráčů</h2>
+<?php seznamhracu(); ?>
 
 </body>
 </html>

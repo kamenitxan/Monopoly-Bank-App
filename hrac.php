@@ -1,4 +1,7 @@
-<html>
+<?php 
+$title = "Hret";
+include("header.php");
+?>
 <body>
 
 <?php
@@ -7,9 +10,9 @@ echo $_GET['jmeno'];
 <br>
 <?php
 
-$jmeno = $_GET['jmeno'];;
+$jmeno = $_GET['jmeno'];
 try {
-    $conn = new PDO('sqlite:Bank.db');
+    $conn = new PDO('sqlite:core/Bank.db');
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
      
     $stmt = $conn->prepare('SELECT penize FROM ucty WHERE jmeno = :jmeno');
@@ -29,6 +32,8 @@ try {
 } catch(PDOException $e) {
     echo 'ERROR: ' . $e->getMessage();
 }
+
+
 ?>
 
 </body>
