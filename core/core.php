@@ -63,7 +63,7 @@ function penizehrace($jmeno) {
         # If one or more rows were returned...
         if ( count($result) ) {
             foreach($result as $row) {
-                echo "Hodnota na uctu: " . $row[0];
+                echo "Stav uctu: " . $row[0];
             }
         } else {
             echo "Hrac " . $jmeno . " nenalezen";
@@ -71,9 +71,43 @@ function penizehrace($jmeno) {
     
     } catch(PDOException $e) {
         echo 'ERROR: ' . $e->getMessage();
+        return $e->getMessage();
     }
 
 }
-
-?>
-
+function prevod($od, $komu, $castka) {
+     try {   
+        $conn = new PDO('sqlite:core/Bank.db');
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        //zjistí jestli má dost peněz na převod
+        $stmt = $conn->prepare('SELECT penize FROM ucty WHERE jmeno = :jmeno');
+        $stmt->execute(array('jmeno' => $od));
+        
+        $result = $stmt->fetch(); 
+        
+        if ($result[0] >= $castka) {
+             //odešle peníze             
+            $stmt->execute(array('jmeno' => $komu)); 
+            $zustatek_prijemce = $stmt->fetch();
+            $zustatek = $zustatek_prijemce[0] + $castka;
+            $stmt = $conn->prepare('UPDATE ucty SET penize = :castka WHERE jmeno = :jmeno');
+            $stmt->execute(array(
+                ':castka'   => $zustatek,
+                ':jmeno' => $komu
+            ));
+            //odečtě peníze
+            $zustatek = $result[0] - $castka;
+            $stmt->execute(array(
+                ':castka'   => $zustatek,
+                ':jmeno' => $od
+            ));
+        echo "Převod proběhl úspěšně.";
+        } else {
+            echo "Nemáte dost peněz na účtě. Převod nebyl úspěšný.";
+        }
+       
+      } catch(PDOException $e) {
+            echo 'ERROR: ' . $e->getMessage();
+      }
+}
