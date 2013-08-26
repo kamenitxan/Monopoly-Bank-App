@@ -39,7 +39,7 @@ function seznamhracu() {
     if ( count($result) ) {
         foreach($result as $row) {
             echo "ID: " . $row[0];
-            echo " Hráč: " . $row[1] . "<br>";
+            echo " Hráč: <a href='hrac.php?jmeno=" . $row[1] . "'>" . $row[1] . "</a><br>";
         }
     } else {
         echo "Hrac " . $jmeno . " nenalezen";
