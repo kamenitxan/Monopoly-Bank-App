@@ -5,4 +5,5 @@ Aplikace poskytující elektronické bankovnictví pro hru Monopoly
 
 
 
-UPOZORNĚNÍ: Aplikace zatím nefunguje
+Požadavky na server:
+  PHP 5.3.0+
