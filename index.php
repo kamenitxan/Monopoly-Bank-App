@@ -8,9 +8,9 @@ include("header.php");
 <h2>Seznam hráčů</h2>
 <?php seznamhracu(); ?>
 
-<hr>
+<!--<hr>
 <h2>Reset hry</h2>
-<span>žádný resety neexistujou</span>
+<span>žádný resety neexistujou</span>-->
 
 <hr>
 <h2>Vytvoření nové hry</h2>

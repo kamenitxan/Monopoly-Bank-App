@@ -58,7 +58,10 @@ function prevod($od, $komu, $castka) {
         $stmt = $conn->prepare('SELECT penize FROM ucty WHERE jmeno = :jmeno');
         $stmt->execute(array('jmeno' => $od));
         
-        $result = $stmt->fetch(); 
+        $result = $stmt->fetch();
+        if ($od == "banker") {
+        	$result[0]=9999999999;
+        } 
         
         if ($result[0] >= $castka) {
              //odešle peníze             
@@ -71,11 +74,13 @@ function prevod($od, $komu, $castka) {
                 ':jmeno' => $komu
             ));
             //odečtě peníze
-            $zustatek = $result[0] - $castka;
-            $stmt->execute(array(
-                ':castka'   => $zustatek,
-                ':jmeno' => $od
-            ));
+            if ($od != "banker") {
+            	$zustatek = $result[0] - $castka;
+            	$stmt->execute(array(
+            	    ':castka'   => $zustatek,
+            	    ':jmeno' => $od
+            	));
+            }        
         echo "Převod proběhl úspěšně.";
         } else {
             echo "Nemáte dost peněz na účtě. Převod nebyl úspěšný.";
@@ -98,7 +103,9 @@ function selecthracu() {
 	       # If one or more rows were returned...
 	       if ( count($result) ) {
 	           foreach($result as $row) {
-	               echo "<option value='" . $row[0] . "'>" . $row[0] . "</option>";
+	           		if ($row[0] != "") {
+	           			echo "<option value='" . $row[0] . "'>" . $row[0] . "</option>";
+	           		}           
 	           }
 	       } else {
 	           echo "<option>Žádný hráč nenalezen</option>";
