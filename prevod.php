@@ -7,13 +7,12 @@ include("header.php");
 <h1>Převod</h1>
 Od hráče: <?php echo $_GET['jmeno']; ?><br>
 Hráči: <?php echo $_GET['komu']; ?><br>
-Částka: <?php echo $_GET['castka']; ?><br>
+Částka: <?php echo $_GET['castka']; ?><br><br>
 
-<?php
-echo prevod($_GET['od'],$_GET['komu'],$_GET['castka']);
+<?php echo prevod($_GET['jmeno'],$_GET['komu'],$_GET['castka']); ?>
 
-penizehrace($jmeno);
-?>
+<br><br>
+<?php penizehrace($jmeno); ?>
 
 <a href="hrac.php?jmeno=<?php echo $jmeno ?>">Zpět</a>
 </body>

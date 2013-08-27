@@ -111,3 +111,26 @@ function prevod($od, $komu, $castka) {
             echo 'ERROR: ' . $e->getMessage();
       }
 }
+function selecthracu() {
+	try {
+	       $conn = new PDO('sqlite:core/Bank.db');
+	       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+	    
+	       $stmt = $conn->prepare('SELECT jmeno FROM ucty');
+	       $stmt->execute(array());
+	
+	       # Get array containing all of the result rows
+	       $result = $stmt->fetchAll(); 
+	       # If one or more rows were returned...
+	       if ( count($result) ) {
+	           foreach($result as $row) {
+	               echo "<option value='" . $row[0] . "'>" . $row[0] . "</option>";
+	           }
+	       } else {
+	           echo "<option>Žádný hráč nenalezen</option>";
+	       }
+	   
+	   } catch(PDOException $e) {
+	       echo 'ERROR: ' . $e->getMessage();
+	   }
+}

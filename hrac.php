@@ -16,9 +16,12 @@ penizehrace($jmeno);
 ?>
 <form action="prevod.php">
     <input type="hidden" name="jmeno" value="<?php echo $jmeno; ?>">
-    <input type="text" name="od" placeholder="Od">
-    <input type="text" name="komu" placeholder="Komu">
-    <input type="text" name="castka" placeholder="Castka">
+    <label>Od: </label><span><?php echo($jmeno); ?></span><br>
+    <label>Komu: </label>
+    <select name="komu">
+    	<?php selecthracu(); ?>
+    </select><br>
+    <input type="number" name="castka" min="0" placeholder="Castka">
     <input type="submit"> 
 </form>
 
