@@ -3,6 +3,7 @@ $jmeno = $_GET['jmeno'];
 $title = "Účet hráče " . $jmeno;
 include("header.php");
 ?>
+</head>
 <body>
 
 <?php

@@ -3,6 +3,7 @@ $jmeno = $_GET['jmeno'];
 $title = "Převod " . $jmeno;
 include("header.php");
 ?>
+</head>
 <body>
 <h1>Převod</h1>
 Od hráče: <?php echo $_GET['jmeno']; ?><br>

@@ -1,30 +1,4 @@
 <?php
-function vytvordb(){
-    $dbname='Bank.db';
-    if(!class_exists('SQLite3'))
-      die("SQLite 3 NOT supported.");
- 
-    $base=new SQLite3($dbname, 0666);
-    echo "SQLite 3 supported."; 
-    
-
-    $dbname='Bank.db';
-    $mytable ="ucty";
- 
-    if(!class_exists('SQLite3'))
-       die("SQLite 3 NOT supported.");
- 
-    $base=new SQLite3($dbname, 0666); 
- 
-    $query = "CREATE TABLE $mytable(
-                ID bigint(20) NOT NULL PRIMARY KEY,
-                jmeno text,
-                penize bigint          
-                )";
-    $results = $base->exec($query);
-}
-
-
 function seznamhracu() {
     try {
         $conn = new PDO('sqlite:core/Bank.db');
@@ -38,7 +12,7 @@ function seznamhracu() {
     # If one or more rows were returned...
     if ( count($result) ) {
         foreach($result as $row) {
-            echo "ID: " . $row[0];
+            echo "" . $row[0];
             echo " Hráč: <a href='hrac.php?jmeno=" . $row[1] . "'>" . $row[1] . "</a><br>";
         }
     } else {
