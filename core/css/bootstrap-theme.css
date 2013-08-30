@@ -1,7 +1,10 @@
 .container {
 	padding-top: 50px;
 }
-
+.form-control {
+	max-width: 200px;
+	margin-bottom: 5px;
+}
 .btn-default,
 .btn-primary,
 .btn-success,

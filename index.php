@@ -14,15 +14,16 @@ include("header.php");
 	
 	<hr>
 	<h2>Vytvoření nové hry</h2>
-	<p>Poznámka: Aktuální hra se smaže.</p>
-	<form method="post" action="core/newdb.php">
-		<input type="text" name="h1"/>
-		<input type="text" name="h2"/>
-		<input type="text" name="h3"/>
-		<input type="text" name="h4"/>
-		<input type="text" name="h5"/>
-		<input type="text" name="h6"/>
-		<input type="submit" value="Vytvořit" />
+	<p>První hráč je bankéř.</p>
+	<div class="alert alert-danger">Aktuální hra se smaže.</div>
+	<form method="post" action="core/newdb.php" class="form-inline">
+		<input type="text" name="h1" class="form-control"/>
+		<input type="text" name="h2" class="form-control"/>
+		<input type="text" name="h3" class="form-control"/>
+		<input type="text" name="h4" class="form-control"/>
+		<input type="text" name="h5" class="form-control"/>
+		<input type="text" name="h6" class="form-control"/>
+		<input type="submit" value="Vytvořit" class="btn btn-default"/>
 	</form>
 </div>
 <script src="core/js/jquery.js"></script>

@@ -8,32 +8,36 @@ include("header.php");
 	<h1>Bankéř</h1>
 		
 	<h2>Běžný převod</h2>
-	<form action="prevod.php">
-	    <input type="hidden" name="jmeno" value="banker">
+
+	<form action="prevod.php" class="form-horizontal">
+	    <input type="hidden" name="jmeno" value="banker" class="col-lg-2 control-label">
 	    <label>Od: </label>
-	    <select name="od">
+	    <select name="od" class="form-control">
 	    	<option value="banker">banker</option>
 	    	<?php selecthracu(); ?>
-	    </select><br>
+	    </select>
 	    <label>Komu: </label>
-	    <select name="komu">
+	    <select name="komu" class="form-control">
 	    	<option value="banker">banker</option>
 	    	<?php selecthracu(); ?>
-	    </select><br>
-	    <input type="number" name="castka" min="0" placeholder="Castka">
-	    <input type="submit"> 
+	    </select>
+	    <label>Částka: </label>
+	    <input type="number" name="castka" min="0" placeholder="Castka" class="form-control">
+	    <input type="submit" class="btn btn-default"> 
 	</form>
 	<h2>Projezd startem</h2>
 	<form action="prevod.php">
 	    <input type="hidden" name="jmeno" value="banker">
 	    <input type="hidden" name="od" value="banker"><br>
 	    <label>Komu: </label>
-	    <select name="komu">
+	    <select name="komu" class="form-control">
 	    	<?php selecthracu(); ?>
-	    </select><br>
-	    <input type="number" name="castka" value="200" min="0">
-	    <input type="submit"> 
+	    </select>
+	    <label>Částka: </label>
+	    <input type="number" name="castka" value="200" min="0" class="form-control">
+	    <input type="submit" class="btn btn-default"> 
 	</form>
+	
 	
 	<h2>Všechny transakce</h2>
 	<?php vsechnytransakce();?>

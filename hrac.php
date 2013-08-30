@@ -14,11 +14,11 @@ include("header.php");
 	    <input type="hidden" name="od" value="<?php echo $jmeno; ?>">
 	    <label>Od: </label><span><?php echo($jmeno); ?></span><br>
 	    <label>Komu: </label>
-	    <select name="komu">
+	    <select name="komu" class="form-control">
 	    	<?php selecthracu(); ?>
-	    </select><br>
-	    <input type="number" name="castka" min="0" placeholder="Castka">
-	    <input type="submit"> 
+	    </select>
+	    <input type="number" name="castka" min="0" placeholder="Castka" class="form-control">
+	    <input type="submit" class="btn btn-default"> 
 	</form>
 	<br>
 	<?php novetransakce($_GET['jmeno']); ?>
