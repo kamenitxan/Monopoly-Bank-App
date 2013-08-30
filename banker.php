@@ -34,6 +34,9 @@ include("header.php");
 	    <input type="number" name="castka" value="200" min="0">
 	    <input type="submit"> 
 	</form>
+	
+	<h2>Všechny transakce</h2>
+	<?php vsechnytransakce();?>
 </div>
 <script src="core/js/jquery.js"></script>
 <script src="core/js/bootstrap.min.js"></script>

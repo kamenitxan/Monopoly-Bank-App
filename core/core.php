@@ -154,3 +154,23 @@ function novetransakce($komu) {
 	       echo 'ERROR: ' . $e->getMessage();
 	   }
 }
+function vsechnytransakce() {
+	try {
+			$conn = new PDO('sqlite:core/Bank.db');
+	       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+	    
+	       $stmt = $conn->prepare('SELECT * FROM log ORDER BY ID DESC');
+	       $stmt->execute(array());
+	
+	       # Get array containing all of the result rows
+	       $result = $stmt->fetchAll(); 
+	       # If one or more rows were returned...
+	       if ( count($result) ) {
+	           foreach($result as $row) {
+	           			echo("Transakce od $row[1] pro $row[2]. Částka: $row[3]kč. Zobrazeno: $row[4] </br>");
+	           }
+	       }
+	   } catch(PDOException $e) {
+	       echo 'ERROR: ' . $e->getMessage();
+	   }
+}
