@@ -23,7 +23,6 @@ function seznamhracu() {
         echo 'ERROR: ' . $e->getMessage();
     }
 }
-
 function penizehrace($jmeno) {
     try {
         $conn = new PDO('sqlite:core/Bank.db');
