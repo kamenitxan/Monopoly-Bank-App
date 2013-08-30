@@ -34,7 +34,7 @@
 	    <div class="collapse navbar-collapse">
 	      <ul class="nav navbar-nav">
 	        <li><a href="index.php">Úvod</a></li>
-	        <li><a href="#about">Účet</a></li>
+	        <li><a href="hrac.php?jmeno=<?php echo($_COOKIE['hrac']) ?>">Účet</a></li>
 	        <li><a href="banker.php">Bankéř</a></li>
 	      </ul>
 	    </div><!--/.nav-collapse -->

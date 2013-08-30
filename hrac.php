@@ -5,17 +5,13 @@ include("header.php");
 ?>
 
 <div class="container">
-	<?php
-	echo $_GET['jmeno'];
-	?>
+	<h1>Účet hráče <?php echo $_GET['jmeno'];?></h1>
 	<br>
-	<?php
-	
-	penizehrace($jmeno);
-	
-	?>
+	<?php penizehrace($jmeno); ?>
+	<br>
 	<form action="prevod.php">
 	    <input type="hidden" name="jmeno" value="<?php echo $jmeno; ?>">
+	    <input type="hidden" name="od" value="<?php echo $jmeno; ?>">
 	    <label>Od: </label><span><?php echo($jmeno); ?></span><br>
 	    <label>Komu: </label>
 	    <select name="komu">

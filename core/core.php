@@ -13,7 +13,7 @@ function seznamhracu() {
     if ( count($result) ) {
         foreach($result as $row) {
             echo "" . $row[0];
-            echo " Hráč: <a href='hrac.php?jmeno=" . $row[1] . "'>" . $row[1] . "</a><br>";
+            echo " Hráč: <a href='hrac.php?jmeno=" . $row[1] . "' onclick=SetCookie('hrac','" . $row[1] . "','1')>" . $row[1] . "</a><br>";
         }
     } else {
         echo "Hrac " . $jmeno . " nenalezen";
@@ -80,9 +80,9 @@ function prevod($od, $komu, $castka) {
             	    ':jmeno' => $od
             	));
             }        
-        echo "Převod proběhl úspěšně.";
+        echo "<div class='alert alert-success'>Převod proběhl úspěšně.</div>";
         } else {
-            echo "Nemáte dost peněz na účtě. Převod nebyl úspěšný.";
+            echo "<div class='alert alert-danger'>Nemáte dost peněz na účtě. Převod nebyl úspěšný.</div>";
         }
        
       } catch(PDOException $e) {
