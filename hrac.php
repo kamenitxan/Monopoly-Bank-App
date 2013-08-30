@@ -20,6 +20,8 @@ include("header.php");
 	    <input type="number" name="castka" min="0" placeholder="Castka">
 	    <input type="submit"> 
 	</form>
+	<br>
+	<?php novetransakce($_GET['jmeno']); ?>
 </div>
 <script src="core/js/jquery.js"></script>
 <script src="core/js/bootstrap.min.js"></script>

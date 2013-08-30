@@ -6,11 +6,7 @@ include("header.php");
 
 <div class="container">
 	<h1>Bankéř</h1>
-	<?php
-	echo $_GET['jmeno'];
-	?>
-	<br>
-	
+		
 	<h2>Běžný převod</h2>
 	<form action="prevod.php">
 	    <input type="hidden" name="jmeno" value="banker">

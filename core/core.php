@@ -69,17 +69,26 @@ function prevod($od, $komu, $castka) {
             $zustatek = $zustatek_prijemce[0] + $castka;
             $stmt = $conn->prepare('UPDATE ucty SET penize = :castka WHERE jmeno = :jmeno');
             $stmt->execute(array(
-                ':castka'   => $zustatek,
-                ':jmeno' => $komu
+                ':castka' => $zustatek,
+                ':jmeno'  => $komu
             ));
             //odečtě peníze
             if ($od != "banker") {
             	$zustatek = $result[0] - $castka;
             	$stmt->execute(array(
-            	    ':castka'   => $zustatek,
-            	    ':jmeno' => $od
+            	    ':castka' => $zustatek,
+            	    ':jmeno'  => $od
             	));
-            }        
+            }
+            
+            $stmt = $conn->prepare('INSERT INTO log VALUES(null, :od, :komu, :castka, :zobrazeno)');
+            $stmt->execute(array(
+                ':castka'    => $castka,
+                ':od' 		 => $od,
+                ':komu'		 => $komu,
+                ':zobrazeno' => 'false'
+            ));
+                    
         echo "<div class='alert alert-success'>Převod proběhl úspěšně.</div>";
         } else {
             echo "<div class='alert alert-danger'>Nemáte dost peněz na účtě. Převod nebyl úspěšný.</div>";
@@ -109,6 +118,37 @@ function selecthracu() {
 	       } else {
 	           echo "<option>Žádný hráč nenalezen</option>";
 	       }
+	   
+	   } catch(PDOException $e) {
+	       echo 'ERROR: ' . $e->getMessage();
+	   }
+}
+function novetransakce($komu) {
+		try {
+			$conn = new PDO('sqlite:core/Bank.db');
+	       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+	    
+	       $stmt = $conn->prepare('SELECT * FROM log WHERE komu = :komu AND zobrazeno = "false"');
+	       $stmt->execute(array(
+	       		':komu' => $komu
+	       ));
+	
+	       # Get array containing all of the result rows
+	       $result = $stmt->fetchAll(); 
+	       # If one or more rows were returned...
+	       if ( count($result) ) {
+	           foreach($result as $row) {
+	           			echo("<div class='alert alert-info'>" . 
+	           				"Nová transakce od hráče $row[1]. Na účet bylo připsáno $row[3] korun </div>");
+	           }
+	       }
+	       
+	       $stmt = $conn->prepare('UPDATE log SET zobrazeno = :stav WHERE komu = :komu');
+	       $stmt->execute(array(
+	           ':komu' => $komu,
+	           ':stav' => "true"
+ 	       ));
+ 	    
 	   
 	   } catch(PDOException $e) {
 	       echo 'ERROR: ' . $e->getMessage();

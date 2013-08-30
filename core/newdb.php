@@ -21,6 +21,17 @@
 	                penize bigint DEFAULT 1500         
 	                )";
 	    $results = $base->exec($query);
+	    
+	    $query = "DROP TABLE log";
+	    $base->exec($query); 
+	    $query = "CREATE TABLE log(
+	                ID INTEGER PRIMARY KEY,
+	                od text,
+	                komu text,
+	                penize bigint,
+	                zobrazeno STATUS VARCHAR DEFAULT 'FALSE'         
+	                )";
+	    $results = $base->exec($query);
 	}
 	function napln() {
 		try {
