@@ -11,7 +11,7 @@ include("header.php");
 	Hráči: <?php echo $_GET['komu']; ?><br>
 	Částka: <?php echo $_GET['castka']; ?><br><br>
 	
-	<?php echo prevod($_GET['od'],$_GET['komu'],$_GET['castka']); ?>
+	<?php echo prevod($_GET['od'],$_GET['komu'],$_GET['castka'], $_GET['pujcka']); ?>
 	
 	<br><br>
 	<?php 

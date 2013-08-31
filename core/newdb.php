@@ -16,9 +16,10 @@
 	    $query = "DROP TABLE $mytable";
 	    $base->exec($query); 
 	    $query = "CREATE TABLE $mytable(
-	                ID bigint(20) NOT NULL PRIMARY KEY,
+	                ID INTEGER PRIMARY KEY,
 	                jmeno text,
-	                penize bigint DEFAULT 1500         
+	                penize bigint DEFAULT 1500,
+	                dluh bigint
 	                )";
 	    $results = $base->exec($query);
 	    
@@ -37,38 +38,24 @@
 		try {
 			$conn = new PDO('sqlite:Bank.db');
 			
-			$castka = 1500;
-			$stmt = $conn->prepare('INSERT INTO ucty VALUES(:id, :jmeno, :penize)');
+			$stmt = $conn->prepare('INSERT INTO ucty VALUES(null, :jmeno, 1500, null)');
 			$stmt->execute(array(
-				':id'   => 1,
-				':jmeno' => $_POST['h1'],
-			    ':penize'   => $castka
+				':jmeno' => $_POST['h1']
 			));
 			$stmt->execute(array(
-				':id'   => 2,
-			   ':jmeno' => $_POST['h2'],
-			   ':penize'   => $castka
+			   ':jmeno' => $_POST['h2']
+			));
+			$stmt->execute(array(
+			    ':jmeno' => $_POST['h3']
+			));
+			$stmt->execute(array(
+				':jmeno' => $_POST['h4']
+			));
+			$stmt->execute(array(
+			   ':jmeno' => $_POST['h5']
 			));	
 			$stmt->execute(array(
-				':id'   => 3,
-			    ':jmeno' => $_POST['h3'],
-			    ':penize'   => $castka
-			));
-			$stmt->execute(array(
-				':id'   => 4,
-				':jmeno' => $_POST['h4'],
-			    ':penize'   => $castka
-			    
-			));
-			$stmt->execute(array(
-				':id'   => 5,
-			   ':jmeno' => $_POST['h5'],
-			   ':penize'   => $castka
-			));	
-			$stmt->execute(array(
-				':id'   => 6,
-			    ':jmeno' => $_POST['h6'],
-			    ':penize'   => $castka
+			    ':jmeno' => $_POST['h6']
 			));			
 		}	
 		catch (PDOException $e) {

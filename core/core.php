@@ -23,6 +23,29 @@ function seznamhracu() {
         echo 'ERROR: ' . $e->getMessage();
     }
 }
+function prvnihrac() {
+    try {
+        $conn = new PDO('sqlite:core/Bank.db');
+	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+	     
+	    $stmt = $conn->prepare('SELECT jmeno FROM ucty ORDER BY ID LIMIT 1');
+	    $stmt->execute(array());
+	 
+	    # Get array containing all of the result rows
+	    $result = $stmt->fetchAll(); 
+	    # If one or more rows were returned...
+	    if ( count($result) ) {
+	        foreach($result as $row) {
+	            return $row[0];
+	        }
+	    } else {
+	        echo "Hrac " . $jmeno . " nenalezen";
+	    }
+    
+    } catch(PDOException $e) {
+        echo 'ERROR: ' . $e->getMessage();
+    }
+}
 function penizehrace($jmeno) {
     try {
         $conn = new PDO('sqlite:core/Bank.db');
@@ -48,55 +71,77 @@ function penizehrace($jmeno) {
     }
 
 }
-function prevod($od, $komu, $castka) {
+function prevod($od, $komu, $castka, $pujcka) {
      try {   
         $conn = new PDO('sqlite:core/Bank.db');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        //zjistí jestli má dost peněz na převod
-        $stmt = $conn->prepare('SELECT penize FROM ucty WHERE jmeno = :jmeno');
-        $stmt->execute(array('jmeno' => $od));
+        //zjistí peníze na účtu
+        $stmt = $conn->prepare('SELECT penize, dluh FROM ucty WHERE jmeno = :jmeno');
+        $stmt->execute(array('jmeno' => $komu)); 
+        $zustatek_prijemce = $stmt->fetch();
         
-        $result = $stmt->fetch();
-        if ($od == "banker") {
-        	$result[0]=9999999999;
-        } 
-        
-        if ($result[0] >= $castka) {
-             //odešle peníze             
-            $stmt->execute(array('jmeno' => $komu)); 
-            $zustatek_prijemce = $stmt->fetch();
-            $zustatek = $zustatek_prijemce[0] + $castka;
-            $stmt = $conn->prepare('UPDATE ucty SET penize = :castka WHERE jmeno = :jmeno');
-            $stmt->execute(array(
-                ':castka' => $zustatek,
-                ':jmeno'  => $komu
-            ));
-            //odečtě peníze
-            if ($od != "banker") {
-            	$zustatek = $result[0] - $castka;
-            	$stmt->execute(array(
-            	    ':castka' => $zustatek,
-            	    ':jmeno'  => $od
-            	));
-            }
-            
-            $stmt = $conn->prepare('INSERT INTO log VALUES(null, :od, :komu, :castka, :zobrazeno)');
-            $stmt->execute(array(
-                ':castka'    => $castka,
-                ':od' 		 => $od,
-                ':komu'		 => $komu,
-                ':zobrazeno' => 'false'
-            ));
-                    
-        echo "<div class='alert alert-success'>Převod proběhl úspěšně.</div>";
+        if ($pujcka >= 10) {
+        	
+        	$castka = $zustatek_prijemce[0] + $pujcka;
+        	$dluh = $zustatek_prijemce[1] + $pujcka + $pujcka*0.1;
+        	$stmt = $conn->prepare('UPDATE ucty SET penize = :castka, dluh = :dluh WHERE jmeno = :jmeno');
+        	$stmt->execute(array(
+        	    ':castka' => $castka,
+        	    ':dluh'   => $dluh,
+        	    ':jmeno'  => $komu
+        	));
+        	
+        	$stmt = $conn->prepare('INSERT INTO log VALUES(null, :od, :komu, :castka, :zobrazeno)');
+        	$stmt->execute(array(
+        	    ':castka'    => $pujcka,
+        	    ':od' 		 => 'Půjčka',
+        	    ':komu'		 => $komu,
+        	    ':zobrazeno' => 'false'
+        	));
         } else {
-            echo "<div class='alert alert-danger'>Nemáte dost peněz na účtě. Převod nebyl úspěšný.</div>";
-        }
-       
-      } catch(PDOException $e) {
+        	$stmt->execute(array('jmeno' => $od));
+        	$result = $stmt->fetch();
+	        if ($od == "banker") {
+	        	$result[0]=9999999999;
+	        } 
+	        
+	        if ($result[0] >= $castka) {
+	             //odešle peníze             
+	            $zustatek = $zustatek_prijemce[0] + $castka;
+	            $stmt = $conn->prepare('UPDATE ucty SET penize = :castka WHERE jmeno = :jmeno');
+	            $stmt->execute(array(
+	                ':castka' => $zustatek,
+	                ':jmeno'  => $komu
+	            ));
+	            //odečtě peníze
+	            if ($od != "banker") {
+	            	$zustatek = $result[0] - $castka;
+	            	$stmt->execute(array(
+	            	    ':castka' => $zustatek,
+	            	    ':jmeno'  => $od
+	            	));
+	            }
+	            
+	            $stmt = $conn->prepare('INSERT INTO log VALUES(null, :od, :komu, :castka, :zobrazeno)');
+	            $stmt->execute(array(
+	                ':castka'    => $castka,
+	                ':od' 		 => $od,
+	                ':komu'		 => $komu,
+	                ':zobrazeno' => 'false'
+	            ));
+	                    
+	        echo "<div class='alert alert-success'>Převod proběhl úspěšně.</div>";
+	        } else {
+	            echo "<div class='alert alert-danger'>Nemáte dost peněz na účtě. Převod nebyl úspěšný.</div>";
+	        }
+	    }  
+     } catch(PDOException $e) {
             echo 'ERROR: ' . $e->getMessage();
-      }
+     }
+}
+function dluh() {
+	
 }
 function selecthracu() {
 	try {
@@ -154,20 +199,26 @@ function novetransakce($komu) {
 	       echo 'ERROR: ' . $e->getMessage();
 	   }
 }
-function vsechnytransakce() {
+function vsechnytransakce($jmeno) {
 	try {
 			$conn = new PDO('sqlite:core/Bank.db');
 	       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
 	    
-	       $stmt = $conn->prepare('SELECT * FROM log ORDER BY ID DESC');
-	       $stmt->execute(array());
-	
+	       if ($jmeno == prvnihrac()) {
+	       		$stmt = $conn->prepare('SELECT * FROM log ORDER BY ID DESC');
+	       		$stmt->execute(array());
+	       } else {
+	       		$stmt = $conn->prepare('SELECT * FROM log WHERE komu = :jmeno ORDER BY ID DESC');
+	       		$stmt->execute(array(
+	       				':jmeno' => $jmeno
+	       		));
+	       }
 	       # Get array containing all of the result rows
 	       $result = $stmt->fetchAll(); 
 	       # If one or more rows were returned...
 	       if ( count($result) ) {
 	           foreach($result as $row) {
-	           			echo("Transakce od $row[1] pro $row[2]. Částka: $row[3]kč. Zobrazeno: $row[4] </br>");
+	           			echo("<tr><td>$row[1]</td><td>$row[2]</td><td>$row[3]kč</td><td>$row[4] </td></tr>");
 	           }
 	       }
 	   } catch(PDOException $e) {
