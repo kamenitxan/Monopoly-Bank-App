@@ -69,7 +69,6 @@ function penizehrace($jmeno) {
         echo 'ERROR: ' . $e->getMessage();
         return $e->getMessage();
     }
-
 }
 function prevod($od, $komu, $castka, $pujcka) {
      try {   
@@ -140,8 +139,43 @@ function prevod($od, $komu, $castka, $pujcka) {
             echo 'ERROR: ' . $e->getMessage();
      }
 }
-function dluh() {
+function dluh($jmeno) {
+	try {
+	       $conn = new PDO('sqlite:core/Bank.db');
+	       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+	    
+	       $stmt = $conn->prepare('SELECT dluh FROM ucty WHERE jmeno = :jmeno');
+	       $stmt->execute(array('jmeno' => $jmeno));
 	
+	       $result = $stmt->fetch(); 
+	       return $result[0];
+	   
+	   } catch(PDOException $e) {
+	       echo 'ERROR: ' . $e->getMessage();
+	       return $e->getMessage();
+	   }
+	
+}
+function dluznici() {
+	try {
+	       $conn = new PDO('sqlite:core/Bank.db');
+	       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+	    
+	       $stmt = $conn->prepare('SELECT jmeno, dluh FROM ucty');
+	       $stmt->execute(array());
+	
+	       $result = $stmt->fetchAll(); 
+	       foreach($result as $row) {
+	       			if ($row[1] > 0) {
+	       				echo("<tr><td>$row[0]</td><td>$row[1]kč</td></tr>");
+	       			}
+	       			
+	       }
+	   
+	   } catch(PDOException $e) {
+	       echo 'ERROR: ' . $e->getMessage();
+	       return $e->getMessage();
+	   }
 }
 function selecthracu() {
 	try {

@@ -39,7 +39,16 @@ include("header.php");
 	    <input type="number" name="castka" value="200" min="0" class="form-control">
 	    <input type="submit" class="btn btn-default"> 
 	</form>
-	
+	<h2>Dlužníci</h2>
+	<div class="table-responsive">
+		<table class="table table-condensed table-hover">
+			<thead>
+				<th>Hráč</th>
+				<th>Dluh</th>
+			</thead>
+			<?php dluznici($_COOKIE['hrac']);?>
+		</table>
+	</div>
 	
 	<h2>Všechny transakce</h2>
 	<div class="table-responsive">

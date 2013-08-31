@@ -9,7 +9,8 @@ include("header.php");
 	<h1>Převod</h1>
 	Od hráče: <?php echo $_GET['od']; ?><br>
 	Hráči: <?php echo $_GET['komu']; ?><br>
-	Částka: <?php echo $_GET['castka']; ?><br><br>
+	Částka: <?php echo $_GET['castka']; ?><br>
+	Půjčka: <?php echo $_GET['pujcka']; ?><br><br>
 	
 	<?php echo prevod($_GET['od'],$_GET['komu'],$_GET['castka'], $_GET['pujcka']); ?>
 	

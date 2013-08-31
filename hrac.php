@@ -24,6 +24,7 @@ include("header.php");
 	<?php novetransakce($_GET['jmeno']); ?>
 	
 	<h2>Půjčka</h2>
+	<p>Aktuální dluh: <?php echo dluh($_GET['jmeno']); ?> kč</p>
 	<p>Peníze jsou ihned připsány na účet. Jednorázový úrok je 10%.</p>
 	<form action="prevod.php">
 	    <input type="hidden" name="jmeno" value="<?php echo $jmeno; ?>">
